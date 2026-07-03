@@ -6128,6 +6128,7 @@ static bool auto_connect_service(GList *services,
 	for (list = services; list; list = list->next) {
 		service = list->data;
 
+		DBG("checking service %s %s", service->identifier, service->path);
 		/*
 		 * Once we hit the unavailable service, we know that the
 		 * rest of them are unavailable too (see service_compare),
@@ -6136,11 +6137,16 @@ static bool auto_connect_service(GList *services,
 		if (!is_available(service))
 			break;
 
-		if (service->disabled)
+		if (service->disabled) {
+			DBG("1");
 			continue;
+		}
 
-		if (ignore[service->type] || busy[service->type])
+
+		if (ignore[service->type] || busy[service->type]) {
+			DBG("2");
 			continue;
+		}
 
 		if (service->connect_reason ==
 				CONNMAN_SERVICE_CONNECT_REASON_NATIVE) {
